@@ -6,6 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import SignUp from '../auth/signup';
 import SignIn from '../auth/signin';
 import Home from '../home/home';
+import QRGenerate from '../qrgenerate/qrgenerate';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ const App = () => {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Home" options={{ headerShown: false }} component={Home} />
+        <Stack.Screen name="QRGenerate" options={{ headerShown: false }} component={QRGenerate} />
       </Stack.Navigator>
     </NavigationContainer>
   );

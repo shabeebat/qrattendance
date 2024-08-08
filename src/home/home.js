@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, Modal } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet, Image } from 'react-native';
 import { Icon } from 'react-native-elements';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
@@ -20,6 +20,7 @@ const Home = () => {
   }, []);
 
   const handleScan = ({ data }) => {
+    console.log("DATAAAAAA======", data);
     const currentTime = new Date();
     let hour = currentTime.getHours();
     const minutes = currentTime.getMinutes();
@@ -68,6 +69,7 @@ const Home = () => {
                 <Text>ID: {item.id}</Text>
                 <Text>Time: {item.date}</Text>
                 <Text>Present: {item.present? 'Yes' : 'No'}</Text>
+                {/* <Image source={{ uri: id.ima.ge }} style={styles.image} /> */}
             </View>
             )}
             keyExtractor={(item) => item.id}
@@ -93,5 +95,13 @@ const Home = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  image: {
+    width: 200,
+    height: 200,
+    borderRadius: 10,
+  },
+});
 
 export default Home;
