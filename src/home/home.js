@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, FlatList, Modal, StyleSheet, Image } from
 import { Icon } from 'react-native-elements';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import { RNCamera } from 'react-native-camera';
+import database from '@react-native-firebase/database';
 
 const Home = () => {
   const [hasPermission, setHasPermission] = useState(null);
@@ -30,10 +31,24 @@ const Home = () => {
       hour = 12;
     }
     const punchInTime = `${hour}:${minutes.toString().padStart(2, '0')}${ampm}`;    
-    
+    const [name, id] = data.split(" - ");
+    // const datas = {
+    //   Details: studentName,
+    //   class: studentClass,
+    // };
+    // setQrData(datas)
+    database()
+    .ref(`/student/details/${id}`)
+    .set({
+      studentName: name,
+      studentID: id,
+      punchTime: punchInTime,
+    })
+    .then(() => console.log('Data set.'));
+
     setScanned(true);
     setId(data);
-    setAttendance([...attendance, { id: data, date: punchInTime, present: true }]);
+    setAttendance([...attendance, { name: name, id: id, date: punchInTime, present: true }]);
     handleCloseCamera();
   };
 
@@ -48,7 +63,7 @@ const Home = () => {
   return (
     <View>
       <View style={{height: 70, backgroundColor: '#fff', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 15 }}>
-            <Text style={{fontSize: 20, color: '#000', fontWeight: 'bold'}}>Home</Text>
+            <Text style={{fontSize: 20, color: '#000', fontWeight: 'bold'}}>QR Attendance</Text>
             <TouchableOpacity style={{}} onPress={handlePresentAttendance}>
             <Icon name="camera" size={30} />
             {/* <Text>Scan to mark attendance</Text> */}
@@ -64,11 +79,13 @@ const Home = () => {
                 borderColor: '#ddd',
                 borderRadius: 10,
                 padding: 10,
+                marginBottom: 10,
                 backgroundColor: '#fff'
               }}>
+                <Text>Name: {item.name}</Text>
                 <Text>ID: {item.id}</Text>
-                <Text>Time: {item.date}</Text>
-                <Text>Present: {item.present? 'Yes' : 'No'}</Text>
+                <Text>punchInTime: {item.date}</Text>
+                {/* <Text>Present: {item.present? 'Yes' : 'No'}</Text> */}
                 {/* <Image source={{ uri: id.ima.ge }} style={styles.image} /> */}
             </View>
             )}
